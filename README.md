@@ -37,7 +37,7 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
 
 ## Criteria for successfull downloading
 
-   [Criteria for Successful Downloading](./Criteria_for_Successful_Downloading.md) — Guidelines for customizing and adapting the script to download MP3 files from RSS feeds.
+   [Criteria for successful downloading](./Criteria_for_Successful_Downloading.md) — Guidelines for customizing and adapting the script to download MP3 files from RSS feeds.
 
 ## License:
 
