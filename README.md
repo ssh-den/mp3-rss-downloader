@@ -22,11 +22,6 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
    Or download the script file directly.
 
 2. **Install Dependencies**:
-   - Make sure you have the following dependencies installed:
-     - `requests`
-     - `tqdm`
-
-     
    ```bash
    pip install requests tqdm
    ```
