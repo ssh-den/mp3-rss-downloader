@@ -1,7 +1,4 @@
 # mp3-rss-downloader
-Downloading mp3 from rss feeds
-
-## Description
 
 This Python script is designed to download MP3 files from an RSS feed. It parses the given RSS feed, extracts MP3 links along with their titles, and downloads them into a specified directory. The script ensures that each MP3 file is downloaded by only one worker, skipping the download if the file already exists locally. It utilizes concurrent programming with ThreadPoolExecutor for efficient downloading and includes progress bars to track the download progress.
 
