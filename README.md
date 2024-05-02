@@ -17,7 +17,7 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/yourusername/repository.git
+   git clone https://github.com/ssh-den/mp3-rss-downloader.git
    ```
    Or download the script file directly.
 
@@ -32,7 +32,7 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
 
 5. **Run the Script**:
    ```bash
-   python script.py
+   python mp3_rss_downloader.py.py
    ```
 
 6. **Downloaded Files**:
