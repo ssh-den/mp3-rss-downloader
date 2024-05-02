@@ -13,19 +13,33 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
 * Utilizes progress bars to indicate download progress for each file.
 * Easy to use and configurable.
 
-# How to use
+# Usage
 
-* Clone the repository or download the script file.
-* Install the required dependencies via pip install.
-* Replace 'your_rss_feed_url_here' with the URL of your RSS feed.
-* Run the script.
-* MP3 files will be downloaded into the mp3 directory in the current location.
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/yourusername/repository.git
+   ```
+   Or download the script file directly.
 
-# Dependencies:
+2. **Install Dependencies**:
+   - Make sure you have the following dependencies installed:
+     - `requests`
+     - `tqdm`
+   ```bash
+   pip install requests tqdm
+   ```
 
-* Python 3.x
-* requests
-* tqdm
+4. **Set RSS Feed URL**:
+   - Open the script and replace 'your_rss_feed_url_here' with the URL of your RSS feed.
+   - Adjust other settings such as the download folder location or the maximum number of concurrent downloads if needed.
+
+5. **Run the Script**:
+   ```bash
+   python script.py
+   ```
+
+6. **Downloaded Files**:
+   MP3 files will be saved in the 'mp3' directory within the script's location.
 
 # Contributing:
 
