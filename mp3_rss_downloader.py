@@ -58,9 +58,9 @@ def download_files(download_tasks):
     # Close the progress bar upon completion
     progress_bar.close()
 
-# Main function
+# Main function to orchestrate the download process
 def main():
-    # Main function to orchestrate the download process
+    # Create the download folder
     setup_download_folder()
     # Fetch the RSS feed content
     rss_content = fetch_rss_content()
