@@ -1,6 +1,6 @@
-## Criteria for Successful Downloading
+## Criteria for successful downloading
 
-### Ideal RSS Structure:
+### Ideal RSS structure:
 To ensure successful downloading using the provided script, the RSS feed structure should adhere to the following guidelines:
 
 1. Each `<item>` in the RSS feed should contain:
@@ -9,7 +9,7 @@ To ensure successful downloading using the provided script, the RSS feed structu
 
 2. The RSS feed should return a valid XML format with well-defined `<item>` elements.
 
-### Modifying the Script to Fit Your Needs:
+### Modifying the script to fit your needs:
 To customize the script according to your specific requirements, follow these steps:
 
 1. Update the `RSS_URL` variable at the beginning of the script with the URL of your desired RSS feed.
