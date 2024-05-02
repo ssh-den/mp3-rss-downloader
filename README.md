@@ -38,6 +38,12 @@ This Python script is designed to download MP3 files from an RSS feed. It parses
 6. **Downloaded Files**:
    MP3 files will be saved in the 'mp3' directory within the script's location.
 
+# Criteria for successfull downloading
+
+   ```markdown
+   [Criteria for Successful Downloading](./Criteria_for_Successful_Downloading.md)
+   ```
+
 # License:
 
 This project is licensed under the MIT License. See the LICENSE file for details.
