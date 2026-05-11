@@ -8,6 +8,7 @@ from concurrent.futures import ThreadPoolExecutor
 RSS_URL = 'your_rss_feed_url_here' # URL of the RSS feed containing MP3 files
 DOWNLOAD_FOLDER = 'mp3' # Folder where the MP3 files will be downloaded
 MAX_WORKERS = 5 # Maximum number of concurrent workers for downloading
+MAX_EPISODES_TO_DOWNLOAD = None
 
 # Functions
 def setup_download_folder():
@@ -64,8 +65,9 @@ def main():
     setup_download_folder()
     # Fetch the RSS feed content
     rss_content = fetch_rss_content()
-    # Parse the RSS content to extract download tasks
     download_tasks = parse_rss(rss_content)
+    if MAX_EPISODES_TO_DOWNLOAD is not None:
+        download_tasks = download_tasks[:MAX_EPISODES_TO_DOWNLOAD]
     # Download the files using concurrent workers
     download_files(download_tasks)
     print("\nDownload complete!")
