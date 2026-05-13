@@ -1,14 +1,16 @@
 # mp3-rss-downloader
 
-This simple Python script is designed to download MP3 files from a specific RSS feed. It parses the given RSS feed, extracts MP3 links along with their titles, and downloads them into a specified directory. The script ensures that each MP3 file is downloaded by only one worker, skipping the download if the file already exists locally. It utilizes concurrent programming with ThreadPoolExecutor for efficient downloading and includes progress bar to track the download progress.
+Simple RSS-to-MP3 downloader with a small config file, concurrent downloads, and a progress bar.
+
+Current version: `0.2.0`
 
 ## Features
 
-* Parses an RSS feed to extract MP3 links and titles.
-* Downloads MP3 files concurrently, ensuring each link is processed by only one worker.
-* Skips downloading if the file already exists locally.
-* Utilizes progress bars to indicate download progress for each file.
-* Easy to use and configurable.
+* Edit feed URL and limits in [`src/config.py`](./src/config.py).
+* The downloader prefers RSS `pubDate` when deciding which episodes are the newest.
+* If a limit is configured, the script keeps only the selected episodes in memory instead of building a full list and slicing it afterwards.
+* Existing files are skipped, and the progress bar still finishes correctly.
+* RSS items missing `title` or `enclosure` are skipped cleanly instead of crashing the run.
 
 ## Usage
 
@@ -18,27 +20,48 @@ This simple Python script is designed to download MP3 files from a specific RSS 
    ```
    Or download the script file directly.
 
-2. **Install Dependencies**:
+2. **Create a virtual environment (recommended)**:
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
+
+3. **Install dependencies**:
    ```bash
    pip install requests tqdm
    ```
 
-4. **Set RSS Feed URL**:
-   - Open the script and replace 'your_rss_feed_url_here' with the URL of your RSS feed.
-   - Adjust other settings such as the download folder location or the maximum number of concurrent downloads if needed.
+   If you prefer not to activate the environment, you can use `.venv/bin/pip` and `.venv/bin/python` directly.
 
-5. **Run the Script**:
+4. **Set your feed and limits**:
+   - Open [`src/config.py`](./src/config.py).
+   - Replace `your_rss_feed_url_here` with the RSS feed URL you want to use.
+   - Optionally adjust `DOWNLOAD_FOLDER`, `MAX_WORKERS`, `EPISODE_DOWNLOAD_LIMIT`, and `REQUEST_TIMEOUT_SECONDS`.
+
+5. **Run the script**:
    ```bash
-   python mp3_rss_downloader.py.py
+   python src/mp3_rss_downloader.py
    ```
 
-6. **Downloaded Files**:
-   MP3 files will be saved in the 'mp3' directory within the script's location.
+6. **Check the version**:
+   ```bash
+   python src/mp3_rss_downloader.py --version
+   ```
 
-## Criteria for successfull downloading
+7. **Downloaded files**:
+   MP3 files are saved in the folder defined by `DOWNLOAD_FOLDER`, relative to the repository root.
 
-   [Criteria for successful downloading](./Criteria_for_Successful_Downloading.md) — Guidelines for customizing and adapting the script to download MP3 files from RSS feeds.
+## Project structure
 
-## License:
+* [`src/mp3_rss_downloader.py`](./src/mp3_rss_downloader.py) — main downloader script
+* [`src/config.py`](./src/config.py) — editable settings
+* [`docs/Criteria_for_Successful_Downloading.md`](./docs/Criteria_for_Successful_Downloading.md) — script behavior and feed expectations
+* [`CHANGELOG.md`](./CHANGELOG.md) — project history in Keep a Changelog format
 
-This project is licensed under the MIT License. See the LICENSE file for details.
+## Notes on RSS ordering
+
+The script sorts episodes by `pubDate` when that field is available. If a feed does not provide `pubDate`, the script falls back to the original RSS item order.
+
+## License
+
+This project is licensed under the MIT License. See [`LICENSE`](./LICENSE) for details.
