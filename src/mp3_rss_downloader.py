@@ -24,13 +24,14 @@ from config import (
     MAX_WORKERS,
     REQUEST_TIMEOUT_SECONDS,
     RSS_URL,
+    RSS_URL_ARRAY,
+    USE_ARRAY,
 )
 
 VERSION = "0.2.0"
 REPO_ROOT = Path(__file__).resolve().parents[1]
 DOWNLOAD_PATH = REPO_ROOT / DOWNLOAD_FOLDER
 INVALID_FILENAME_CHARS = re.compile(r'[<>:"/\\|?*]')
-
 
 @dataclass(frozen=True)
 class EpisodeTask:
@@ -40,7 +41,6 @@ class EpisodeTask:
     url: str
     filename: Path
     sort_key: tuple[int, float]
-
 
 def parse_args() -> argparse.Namespace:
     """Parse command-line options."""
@@ -118,7 +118,7 @@ def build_episode_task(item: ET.Element, source_index: int) -> EpisodeTask | Non
     enclosure_url = enclosure_element.get("url", "").strip() if enclosure_element is not None else ""
 
     if not title or not enclosure_url:
-        return None
+          return None
 
     published_at = parse_pub_date(pub_date_element.text if pub_date_element is not None else None)
 
@@ -187,16 +187,16 @@ def parse_rss(rss_content: bytes) -> tuple[list[EpisodeTask], int]:
         else:
             keep_top_episodes(selected_tasks, task, source_index)
 
-        item.clear()
+            item.clear()
 
     ordered_tasks = [entry[2] for entry in selected_tasks]
     ordered_tasks.sort(key=lambda task: task.sort_key, reverse=True)
     return assign_unique_filenames(ordered_tasks), skipped_items
 
 
-def fetch_rss_content() -> bytes:
+def fetch_rss_content(rss_url: str) -> bytes:
     """Fetch the RSS feed and raise a useful error when the request fails."""
-    response = requests.get(RSS_URL, timeout=REQUEST_TIMEOUT_SECONDS)
+    response = requests.get(rss_url, timeout=REQUEST_TIMEOUT_SECONDS)
     response.raise_for_status()
     return response.content
 
@@ -279,28 +279,57 @@ def print_summary(downloaded: int, skipped: int, failures: list[str], skipped_it
 
 def main() -> int:
     """Run the downloader."""
+    global RSS_URL
+
     parse_args()
 
     try:
         validate_config()
         setup_download_folder()
-        rss_content = fetch_rss_content()
-        download_tasks, skipped_items = parse_rss(rss_content)
-    except (ET.ParseError, RequestException, ValueError) as exc:
+    except ValueError as exc:
         print(f"Error: {exc}")
         return 1
 
-    if not download_tasks:
-        if skipped_items:
-            print(f"Skipped {skipped_items} RSS item(s) without a usable title or enclosure URL.")
-        print("No valid RSS episodes matched your settings.")
-        return 0
+    total_downloaded = 0
+    total_skipped = 0
+    total_failures: list[str] = []
+    total_skipped_items = 0
 
-    downloaded, skipped, failures = download_files(download_tasks)
-    print_summary(downloaded, skipped, failures, skipped_items)
+    if USE_ARRAY == True:
+        for rss_url in RSS_URL_ARRAY:
+    
+            try:
+                validate_config()
+                setup_download_folder()
+
+                rss_content = fetch_rss_content(rss_url)
+
+                download_tasks, skipped_items = parse_rss(rss_content)
+
+            except (ET.ParseError, RequestException, ValueError) as exc:
+                print(f"Error: {exc}")
+                continue
+
+            if not download_tasks:
+                print(f"No episodes found for {rss_url}")
+                continue
+
+            downloaded, skipped, failures = download_files(download_tasks)
+
+            total_downloaded += downloaded
+            total_skipped += skipped
+            total_failures.extend(failures)
+            total_skipped_items += skipped_items
+            
+        print_summary(
+            total_downloaded,
+            total_skipped,
+            total_failures,
+            total_skipped_items,
+        )
+
     print("\nDownload complete!")
     return 0
-
 
 if __name__ == "__main__":
     raise SystemExit(main())
